@@ -1,4 +1,4 @@
-name: 'Gemini code review'
+name: 'Ask Gemini AI to review your pull requests'
 description: 'Ask Gemini AI to review your pull request'
 
 inputs:
