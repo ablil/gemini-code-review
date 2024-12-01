@@ -1,4 +1,4 @@
-name: 'Ask Gemini AI to review your pull requests'
+name: 'Gemini code review'
 description: 'Ask Gemini AI to review your pull request'
 
 inputs:
@@ -15,15 +15,11 @@ inputs:
     required: true
     description: 'Github ref name'
 
-branding:
-  icon: 'check-circle'
-  color: 'orange'
-  
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    GEMINI_API_KEY: ${{ inputs.gemini_api_key }}
-    GITHUB_TOKEN: ${{ inputs.github_token }}
-    GITHUB_REPOSITORY: ${{ inputs.github_repository }}
-    GITHUB_REF_NAME: ${{ inputs.github_ref_name }}
+  args:
+    - ${{ inputs.gemini_api_key }}
+    - ${{ inputs.github_token }}
+    - ${{ inputs.github_repository }}
+    - ${{ inputs.github_ref_name }}

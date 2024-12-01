@@ -19,8 +19,5 @@ if __name__ == '__main__':
     pr = gh.get_pull_request(repo, pr_no)
     diffs = gh.extract_git_diff_from_pull_request(pr)
     for diff in diffs:
-        try:
-            review = ai.ask(diff.diff)
-            gh.write_comment(pr, review, diff.filename)
-        except Exception as e:
-            logging.error(e)
+        review = ai.ask(diff.diff)
+        gh.write_comment(pr, review, diff.filename)
