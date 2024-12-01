@@ -15,6 +15,10 @@ inputs:
     required: true
     description: 'Github ref name'
 
+branding:
+  icon: 'check-circle'
+  color: 'orange'
+  
 runs:
   using: 'docker'
   image: 'Dockerfile'
