@@ -20,7 +20,7 @@ jobs:
         uses: ablil/gemini-code-review@0.1.6
         with:
           # Get your Gemini API key from here https://ai.google.dev/gemini-api/docs/api-key
-          gemini_api_key: ${{ secrets.GEMINI_API_TOKEN }}
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           # Github token
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # Github repository
