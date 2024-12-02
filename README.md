@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Gemini AI Review
-        uses: your-username/your-action-repo@v1
+        uses: ablil/gemini-code-review@0.1.6
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
