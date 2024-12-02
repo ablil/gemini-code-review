@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == '__main__':
     assert 'GITHUB_TOKEN' in os.environ
-    assert 'GEMINI_API_KEY' in os.environ
+    assert 'GEMINI_API_KEY' in os.environ and len(os.environ['GEMINI_API_KEY'])
     assert 'GITHUB_REPOSITORY' in os.environ
     assert 'GITHUB_REF_NAME' in os.environ and os.environ['GITHUB_REF_NAME'].endswith('/merge')
 
@@ -18,6 +18,7 @@ if __name__ == '__main__':
 
     pr = gh.get_pull_request(repo, pr_no)
     diffs = gh.extract_git_diff_from_pull_request(pr)
+    ai.configure_credentials(os.environ['GEMINI_API_KEY'])
     for diff in diffs:
         try:
             review = ai.ask(diff.diff)
