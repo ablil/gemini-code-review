@@ -8,8 +8,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == '__main__':
-    assert 'GITHUB_TOKEN' in os.environ
     assert 'GEMINI_API_KEY' in os.environ and len(os.environ['GEMINI_API_KEY'])
+    assert 'GITHUB_TOKEN' in os.environ
     assert 'GITHUB_REPOSITORY' in os.environ
     assert 'GITHUB_REF_NAME' in os.environ and os.environ['GITHUB_REF_NAME'].endswith('/merge')
 
