@@ -1,11 +1,18 @@
 #!usr/bin/env python3
+import fnmatch
 
 import ai
 import gh
 import os
 import logging
 
+from gh import GitDiff
+
 logging.basicConfig(level=logging.DEBUG)
+
+def filter_diffs(diffs: list[GitDiff], exclude_patterns: list[str]) -> list[GitDiff]:
+    return [df for df in diffs if not any(fnmatch.fnmatch(df.filename, pat) for pat in exclude_patterns)]
+
 
 if __name__ == '__main__':
     assert 'GEMINI_API_KEY' in os.environ and len(os.environ['GEMINI_API_KEY'])
@@ -18,8 +25,10 @@ if __name__ == '__main__':
 
     pr = gh.get_pull_request(repo, pr_no)
     diffs = gh.extract_git_diff_from_pull_request(pr)
+    filtered_diffs = filter_diffs(diffs, os.environ['EXCLUDE_FILENAMES'].split(','))
     ai.configure_credentials(os.environ['GEMINI_API_KEY'])
-    for diff in diffs:
+
+    for diff in filtered_diffs:
         try:
             review = ai.ask(diff.diff)
             gh.write_comment(pr, review, diff.filename)

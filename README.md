@@ -16,6 +16,7 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 | `github_repository` | No       | The repository name, in the format `owner/repository`.                                       |
 | `github_ref_name`   | No       | The pull request reference name (e.g., branch or tag name).                                  |
 | `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
+| `exclude_fileanems` | No       | Filenames patterns to exclude, default: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
 
 ## Output
 
