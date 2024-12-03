@@ -7,6 +7,8 @@ from utils import assert_env_variable
 
 logging.basicConfig(level=logging.DEBUG)
 
+logging.getLogger('urllib3').setLevel(logging.WARN)
+
 if __name__ == '__main__':
     # verify all needed env variables
     gemini_api_key = assert_env_variable('GEMINI_API_KEY')
