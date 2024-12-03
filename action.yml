@@ -7,13 +7,7 @@ inputs:
     description: 'Get your Gemini API key from here https://ai.google.dev/gemini-api/docs/api-key'
   github_token:
     required: true
-    description: 'Github token'
-  github_repository:
-    required: true
-    description: 'Github repository'
-  github_ref_name:
-    required: true
-    description: 'Github ref name'
+    description: 'Github token, provided by Github'
   gemini-model:
     required: false
     description: 'Gemini model to use (default: gemini-1.5-flash'
@@ -33,7 +27,5 @@ runs:
   env:
     GEMINI_API_KEY: ${{ inputs.gemini_api_key }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
-    GITHUB_REPOSITORY: ${{ inputs.github_repository }}
-    GITHUB_REF_NAME: ${{ inputs.github_ref_name }}
     EXCLUDE_FILENAMES: ${{ inputs.exclude_filenames }}
     GEMINI_MODEL: ${{ inputs.gemini_model }}
