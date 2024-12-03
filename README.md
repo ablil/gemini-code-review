@@ -9,12 +9,13 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 
 ## Inputs
 
-| Input Name            | Required | Description                                                                                   |
-|-----------------------|----------|-----------------------------------------------------------------------------------------------|
-| `gemini_api_key`      | Yes      | Your Gemini API key. [Get your API key here](https://ai.google.dev/gemini-api/docs/api-key).  |
-| `github_token`        | No       | A GitHub token for accessing the repository.                                                 |
-| `github_repository`   | No       | The repository name, in the format `owner/repository`.                                       |
-| `github_ref_name`     | No       | The pull request reference name (e.g., branch or tag name).                                  |
+| Input Name          | Required | Description                                                                                   |
+|---------------------|----------|-----------------------------------------------------------------------------------------------|
+| `gemini_api_key`    | Yes      | Your Gemini API key. [Get your API key here](https://ai.google.dev/gemini-api/docs/api-key).  |
+| `github_token`      | No       | A GitHub token for accessing the repository.                                                 |
+| `github_repository` | No       | The repository name, in the format `owner/repository`.                                       |
+| `github_ref_name`   | No       | The pull request reference name (e.g., branch or tag name).                                  |
+| `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
 
 ## Output
 

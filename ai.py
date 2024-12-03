@@ -15,9 +15,14 @@ def configure_credentials(api_key: str = os.environ['GEMINI_API_KEY']):
     logging.info("configuring credentials")
     genai.configure(api_key=api_key)
 
+def __get_user_gemini_model_or_default() -> str:
+    if 'GEMINI_MODEL' in os.environ and len(os.environ['GEMINI_MODEL']):
+        return os.environ['GEMINI_MODEL']
+    return 'gemini-1.5-flash'
+
 def ask(git_diff: str) -> str:
     configure_credentials()
     logging.debug("Asking Gemini AI")
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel(__get_user_gemini_model_or_default())
     response = model.generate_content(f"{__prompt}\n\n{git_diff}")
     return response.text
