@@ -14,6 +14,10 @@ inputs:
   github_ref_name:
     required: true
     description: 'Github ref name'
+  gemini-model:
+    required: false
+    description: 'Gemini model to use (default: gemini-1.5-flash'
+    default: 'gemini-1.5-flash'
 
 branding:
   icon: 'check-circle'
@@ -27,3 +31,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_REF_NAME: ${{ inputs.github_ref_name }}
+    GEMINI_MODEL: ${{ inputs.gemini_model }}
