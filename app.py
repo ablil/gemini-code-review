@@ -1,36 +1,28 @@
 #!usr/bin/env python3
-import fnmatch
-
-import ai
-import gh
-import os
 import logging
 
-from gh import GitDiff
+from ai import Gemini
+from gh import GithubClient
+from utils import assert_env_variable
 
 logging.basicConfig(level=logging.DEBUG)
 
-def filter_diffs(diffs: list[GitDiff], exclude_patterns: list[str]) -> list[GitDiff]:
-    return [df for df in diffs if not any(fnmatch.fnmatch(df.filename, pat) for pat in exclude_patterns)]
-
-
 if __name__ == '__main__':
-    assert 'GEMINI_API_KEY' in os.environ and len(os.environ['GEMINI_API_KEY'])
-    assert 'GITHUB_TOKEN' in os.environ
-    assert 'GITHUB_REPOSITORY' in os.environ
-    assert 'GITHUB_REF_NAME' in os.environ and os.environ['GITHUB_REF_NAME'].endswith('/merge')
+    # verify all needed env variables
+    gemini_api_key = assert_env_variable('GEMINI_API_KEY')
+    repository_name = assert_env_variable('GITHUB_REPOSITORY')
+    github_token = assert_env_variable('GITHUB_TOKEN')
+    excluded_filenames = assert_env_variable('EXCLUDE_FILENAMES', '*.txt,*.md,*.yaml,*.yml,package-lock.json,yarn.lock')
+    ref_name = assert_env_variable('GITHUB_REF_NAME')
 
-    repo = os.environ['GITHUB_REPOSITORY']
-    pr_no = int(os.environ['GITHUB_REF_NAME'].split('/')[0])
+    github = GithubClient(github_token)
+    gemini = Gemini(gemini_api_key)
 
-    pr = gh.get_pull_request(repo, pr_no)
-    diffs = gh.extract_git_diff_from_pull_request(pr)
-    filtered_diffs = filter_diffs(diffs, os.environ['EXCLUDE_FILENAMES'].split(','))
-    ai.configure_credentials(os.environ['GEMINI_API_KEY'])
+    pull_request = github.get_pull_request(repository_name, int(ref_name.split('/')[0]))
+    diffs = github.extract_diffs(pull_request, set(excluded_filenames.split(',')))
 
-    for diff in filtered_diffs:
+    for diff in diffs:
         try:
-            review = ai.ask(diff.diff)
-            gh.write_comment(pr, review, diff.filename)
+            github.comment(pull_request, gemini.review(diff.diff), diff.filename)
         except Exception as e:
             logging.error(e)
