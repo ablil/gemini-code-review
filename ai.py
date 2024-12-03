@@ -2,7 +2,6 @@
 
 import logging
 import os
-from functools import cache
 
 import google.generativeai as genai
 
