@@ -1,28 +1,35 @@
 #!/usr/bin/env python3
 
 import logging
-import os
 
 import google.generativeai as genai
 
+from utils import assert_env_variable
+
 logging.basicConfig(level=logging.DEBUG)
 
-__prompt = """
+
+class Gemini:
+    __prompt = """
 Review only the changes in the following git diff and provide clear, concise suggestions for improvement. Focus on aspects like readability, performance, and maintainability in the changed code. Include code samples or refactor suggestions where applicable. Do not review the unchanged code, and avoid unnecessary explanations—just actionable feedback on the modifications. Here’s the diff:"""
 
-def configure_credentials(api_key: str = os.environ['GEMINI_API_KEY']):
-    assert len(api_key), 'invalid api key'
-    logging.info("configuring credentials")
-    genai.configure(api_key=api_key)
+    def __init__(self, apikey: str, gemini_model: str = 'gemini-1.5-flash'):
+        genai.configure(api_key=apikey)
+        logging.info("Gemini client configured successfully")
+        self.model = genai.GenerativeModel(gemini_model)
 
-def __get_user_gemini_model_or_default() -> str:
-    if 'GEMINI_MODEL' in os.environ and len(os.environ['GEMINI_MODEL']):
-        return os.environ['GEMINI_MODEL']
-    return 'gemini-1.5-flash'
+    def ask(self, query: str) -> str:
+        logging.info(f"Asking Gemini {query[0:50]}")
+        return self.model.generate_content(query).text
 
-def ask(git_diff: str) -> str:
-    configure_credentials()
-    logging.debug("Asking Gemini AI")
-    model = genai.GenerativeModel(__get_user_gemini_model_or_default())
-    response = model.generate_content(f"{__prompt}\n\n{git_diff}")
-    return response.text
+    def review(self, git_diff: str):
+        logging.debug(f"Asking Gemini to review {git_diff[0:50]}")
+        return self.model.generate_content(f"{self.__prompt}\n\n{git_diff}").text
+
+
+if __name__ == '__main__':
+    api_key = assert_env_variable('GEMINI_API_KEY')
+    model = assert_env_variable('GEMINI_MODEL', 'gemini-1.5-flash')
+
+    gemini = Gemini(api_key, model)
+    print(gemini.ask('How can you help me ?'))

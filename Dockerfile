@@ -7,5 +7,6 @@ COPY entrypoint.sh /entrypoint.sh
 COPY gh.py /gh.py
 COPY ai.py /ai.py
 COPY app.py /app.py
+COPY utils.py /utils.py
 
 ENTRYPOINT ["/entrypoint.sh"]
