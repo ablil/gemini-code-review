@@ -18,6 +18,10 @@ inputs:
     required: false
     description: 'Gemini model to use (default: gemini-1.5-flash'
     default: 'gemini-1.5-flash'
+  exclude_filenames:
+    required: false
+    description: 'Filename patterns to exclude'
+    default: '*.md,*.txt,*.yaml,*.yaml,package-lock.json,yarn.lock'
 
 branding:
   icon: 'check-circle'
@@ -31,4 +35,5 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     GITHUB_REPOSITORY: ${{ inputs.github_repository }}
     GITHUB_REF_NAME: ${{ inputs.github_ref_name }}
+    EXCLUDE_FILENAMES: ${{ inputs.exclude_filenames }}
     GEMINI_MODEL: ${{ inputs.gemini_model }}
