@@ -29,18 +29,16 @@ name: Gemini AI Pull Request Review
 
 on:
   pull_request:
-    types: [opened]
+
+permissions: write-all
 
 jobs:
   gemini-review:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Run Gemini AI Review
-        uses: ablil/gemini-code-review@0.1.6
+        uses: ablil/gemini-code-review@0.2.0
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
