@@ -1,9 +1,12 @@
 name: Create Release on Tag
 
 on:
-  push:
-    tags:
-      - '*'
+  pull_request:
+    branches:
+      - main
+#  push:
+#    tags:
+#      - '*'
 
 jobs:
   release:
@@ -18,10 +21,11 @@ jobs:
         run: |
           pip install git-changelog
           git-changelog >> change-log.md
+          cat change-log.md
 
-      - name: Create Release
-        uses: ncipollo/release-action@v1.14.0
-        with:
-          tag: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          bodyFile: ./change-log.md
+#      - name: Create Release
+#        uses: ncipollo/release-action@v1.14.0
+#        with:
+#          tag: ${{ github.ref_name }}
+#          name: Release ${{ github.ref_name }}
+#          bodyFile: ./change-log.md
