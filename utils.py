@@ -8,9 +8,9 @@ excluded_patterns = [
     '*.yml',
     '*.md',
     'package-lock.json',
-    'yarn.lock',
     '.gitignore',
-    '.dockerignore'
+    '.dockerignore',
+    '*.lock'
 ]
 
 def assert_env_variable(key: str, default_value: str|None = None) -> str:
