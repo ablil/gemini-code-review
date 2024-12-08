@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gemini-code-review"
-version = "0.2.1"
+version = "0.3.0"
 description = "Ask Gemini to review your pull requests"
 authors = ["ablil <ablil@proton.me>"]
 readme = "README.md"
