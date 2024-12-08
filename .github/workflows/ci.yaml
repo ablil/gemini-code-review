@@ -1,0 +1,30 @@
+name: 'Base docker image build'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: login to ghcr
+        run: docker login ghcr.io -u USERNAME -p ${{ secrets.GITHUB_TOKEN }}
+      - name: build image
+        run: docker build -t gemini-code-review:latest -f Dockerfile.base .
+      - name: push latest version
+        if: github.ref == 'refs/heads/main'
+        run: docker tag gemini-code-review:latest ghcr.io/ablil/gemini-code-review:latest && docker push $_
+      - name: push specific version
+        if: github.ref != 'refs/heads/main'
+        run: docker tag gemini-code-review:latest ghcr.io/ablil/gemini-code-review:${{ github.sha }} && docker push $_
+
