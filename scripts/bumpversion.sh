@@ -12,6 +12,7 @@ ensure_main_branch() {
 
 bumpversion() {
     _type=$1 # patch, minor or major
+    root_dir=$(git rev-parse --show-toplevel)
 
     # bump version
     current_version=$(poetry version --short)
@@ -19,10 +20,10 @@ bumpversion() {
     new_version=$(poetry version --short)
 
     # update readme
-    gsed -i "s/$current_version/$new_version/g" README.md
+    gsed -i "s/$current_version/$new_version/g" $root_dir/README.md
 
     # commit and tag
-    git commit -m "$_type: bump version to $new_version" -o pyproject.toml -o README.md
+    git commit -m "$_type: bump version to $new_version" -o $root_dir/pyproject.toml -o $root_dir/README.md
     git tag "v$new_version"
 }
 
