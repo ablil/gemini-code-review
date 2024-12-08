@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Run Gemini AI Review
-        uses: ablil/gemini-code-review@0.2.5
+        uses: ablil/gemini-code-review@0.2.6
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
