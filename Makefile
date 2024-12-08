@@ -3,6 +3,9 @@
 help:
 	@echo "usage: make (patch|minor|major)"
 
+dryrun:
+	@bash dryrun.sh
+	
 patch:
 	@bash bumpversion.sh patch
 

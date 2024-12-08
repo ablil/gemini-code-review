@@ -15,6 +15,7 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 | `gemini_api_key`    | Yes      | Your Gemini API key. [Get your API key here](https://ai.google.dev/gemini-api/docs/api-key).  |
 | `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
 | `exclude_filenames` | No       | Filenames to exclude from code review, by default it picks up all file ignored by git on .gitignore. Can be overriden with a custom list like: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
+| `dry_run`    | No      | set this to 1 or 'true' if you want to test this action without actually commenting on pull requesst |
 
 ## Output
 
