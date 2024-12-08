@@ -19,7 +19,8 @@ class GitDiff:
 
 
 class GithubClient:
-    def __init__(self, github_token: str):
+    def __init__(self, github_token: str, dry_run: bool = False):
+        self.dry_run = dry_run
         self.client = Github(auth=Auth.Token(github_token))
         logging.info("created Github client successfully")
 
@@ -40,8 +41,11 @@ class GithubClient:
 
         try:
             last_commit = pr.get_commits()[pr.commits - 1]
-            pr.create_comment(body, last_commit, filename, 1)
-            logging.info(f"Added comment to PR #{pr.number}: body: {body[:50]}")
+            if self.dry_run:
+                logging.info(f"[dry-run] Added comment to PR #{pr.number}: body: {body[:50]}")
+            else:
+                pr.create_comment(body, last_commit, filename, 1)
+                logging.info(f"Added comment to PR #{pr.number}: body: {body[:50]}")
         except Exception as e:
             logging.error(f"Failed to add comment to PR #{pr.number}: {e}")
 
@@ -51,6 +55,6 @@ class GithubClient:
 if __name__ == '__main__':
     token = assert_env_variable('GITHUB_TOKEN')
     exclude_patterns =  get_files_from_gitignore('.gitignore')
-    client = GithubClient(token)
+    client = GithubClient(token, dry_run = True)
     pr = client.get_pull_request('ablil/gemini-code-review', 5)
     diffs = client.extract_diffs(pr, exclude_patterns)

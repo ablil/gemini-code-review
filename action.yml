@@ -16,6 +16,10 @@ inputs:
     required: false
     description: 'Filename patterns to exclude'
     default: '*.md,*.txt,*.yaml,*.yaml,package-lock.json,yarn.lock'
+  dry_run:
+    required: false
+    description: test Github action without actually commenting on the pull requests
+    default: false
 
 branding:
   icon: 'check-circle'
@@ -29,3 +33,4 @@ runs:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     EXCLUDE_FILENAMES: ${{ inputs.exclude_filenames }}
     GEMINI_MODEL: ${{ inputs.gemini_model }}
+    DRY_RUN: ${{ inputs.dry_run }}
