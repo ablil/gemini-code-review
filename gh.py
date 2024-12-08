@@ -7,7 +7,7 @@ from typing import List
 from github import Auth
 from github import Github, PullRequest
 
-from utils import assert_env_variable
+from utils import assert_env_variable, get_files_from_gitignore
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -50,8 +50,7 @@ class GithubClient:
 
 if __name__ == '__main__':
     token = assert_env_variable('GITHUB_TOKEN')
-    exclude_patterns = assert_env_variable('EXCLUDE_FILENAMES', get_files_from_gitignore('.gitignore'))
-    print(exclude_patterns)
+    exclude_patterns =  get_files_from_gitignore('.gitignore')
     client = GithubClient(token)
     pr = client.get_pull_request('ablil/gemini-code-review', 5)
-    diffs = client.extract_diffs(pr, set(exclude_patterns.split(',')))
+    diffs = client.extract_diffs(pr, exclude_patterns)

@@ -3,7 +3,7 @@ import logging
 
 from ai import Gemini
 from gh import GithubClient
-from utils import assert_env_variable, get_files_from_gitignore 
+from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -14,14 +14,14 @@ if __name__ == '__main__':
     gemini_api_key = assert_env_variable('GEMINI_API_KEY')
     repository_name = assert_env_variable('GITHUB_REPOSITORY')
     github_token = assert_env_variable('GITHUB_TOKEN')
-    excluded_filenames = assert_env_variable('EXCLUDE_FILENAMES', get_files_from_gitignore('.gitignore'))
+    excluded_filenames = get_env_variable_or_default('EXCLUDE_FILENAMES')
     ref_name = assert_env_variable('GITHUB_REF_NAME')
 
     github = GithubClient(github_token)
     gemini = Gemini(gemini_api_key)
 
     pull_request = github.get_pull_request(repository_name, int(ref_name.split('/')[0]))
-    diffs = github.extract_diffs(pull_request, set(excluded_filenames.split(',')))
+    diffs = github.extract_diffs(pull_request, set(excluded_filenames.split(',')) if excluded_filenames else get_files_from_gitignore('.gitignore'))
 
     for diff in diffs:
         try:
