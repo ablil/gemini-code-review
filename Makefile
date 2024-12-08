@@ -1,16 +1,19 @@
 .PHONY: help
 
+ROOT_DIR = $(shell git rev-parse --show-toplevel)
+SCRIPTS_DIR = "$(ROOT_DIR)/scripts"
+
 help:
 	@echo "usage: make (patch|minor|major)"
 
 dryrun:
-	@bash dryrun.sh
+	@bash $(SCRIPTS_DIR)/dryrun.sh
 	
 patch:
-	@bash bumpversion.sh patch
+	@bash $(SCRIPTS_DIR)/bumpversion.sh patch
 
 minor:
-	@bash bumpversion.sh minor
+	@bash $(SCRIPTS_DIR)/bumpversion.sh minor
 
 major:
-	@bash bumpversion.sh major
+	@bash $(SCRIPTS_DIR)/bumpversion.sh major

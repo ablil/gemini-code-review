@@ -4,4 +4,5 @@ export DRY_RUN=true
 export GITHUB_REF_NAME=5/foo/bar
 export GITHUB_REPOSITORY=ablil/gemini-code-review
 
-python app.py
+root_dir=$(git rev-parse --show-toplevel)
+python $root_dir/src/app.py
