@@ -14,7 +14,7 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 | `GITHUB_TOKEN`      | Yes      | Github Token to interact with Github API, provided by google through ${{ secrets.GITHUB_TOKEN }} |
 | `gemini_api_key`    | Yes      | Your Gemini API key. [Get your API key here](https://ai.google.dev/gemini-api/docs/api-key).  |
 | `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
-| `exclude_fileanems` | No       | Filenames patterns to exclude, default: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
+| `exclude_fileanems` | No       | Filenames to exclude from code review, by default it picks up all file ignore by git on .gitignore. Can be overriden with a custom list default: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
 
 ## Output
 

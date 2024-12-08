@@ -3,7 +3,7 @@ import logging
 
 from ai import Gemini
 from gh import GithubClient
-from utils import assert_env_variable, excluded_patterns
+from utils import assert_env_variable, get_files_from_gitignore 
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     gemini_api_key = assert_env_variable('GEMINI_API_KEY')
     repository_name = assert_env_variable('GITHUB_REPOSITORY')
     github_token = assert_env_variable('GITHUB_TOKEN')
-    excluded_filenames = assert_env_variable('EXCLUDE_FILENAMES', ','.join(excluded_patterns))
+    excluded_filenames = assert_env_variable('EXCLUDE_FILENAMES', get_files_from_gitignore('.gitignore'))
     ref_name = assert_env_variable('GITHUB_REF_NAME')
 
     github = GithubClient(github_token)

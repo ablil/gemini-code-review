@@ -3,11 +3,8 @@
 import logging
 
 import google.generativeai as genai
-
 from utils import assert_env_variable
-
 logging.basicConfig(level=logging.DEBUG)
-
 
 class Gemini:
     __prompt = """
