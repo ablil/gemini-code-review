@@ -50,8 +50,7 @@ class GithubClient:
 
 if __name__ == '__main__':
     token = assert_env_variable('GITHUB_TOKEN')
-    exclude_patterns = assert_env_variable('EXCLUDE_FILENAMES', '*.txt,*.md')
-
+    exclude_patterns = assert_env_variable('EXCLUDE_FILENAMES', get_files_from_gitignore('.gitignore'))
     print(exclude_patterns)
     client = GithubClient(token)
     pr = client.get_pull_request('ablil/gemini-code-review', 5)
