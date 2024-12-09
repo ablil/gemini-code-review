@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import logging
+from utils import assert_env_variable, create_logger
 
 import google.generativeai as genai
-from utils import assert_env_variable
-logging.basicConfig(level=logging.DEBUG)
+
+
+logger = create_logger(__name__)
 
 class Gemini:
     __prompt = """
@@ -12,15 +13,15 @@ Review only the changes in the following git diff and provide clear, concise sug
 
     def __init__(self, apikey: str, gemini_model: str = 'gemini-1.5-flash'):
         genai.configure(api_key=apikey)
-        logging.info("Gemini client configured successfully")
         self.model = genai.GenerativeModel(gemini_model)
+        logger.info(f"Gemini client configured successfully with model '{gemini_model}'")
+        logger.debug(f"using prompt '''{self.__prompt}'''")
 
     def ask(self, query: str) -> str:
-        logging.info(f"Asking Gemini {query[0:50]}")
         return self.model.generate_content(query).text
 
     def review(self, git_diff: str):
-        logging.debug(f"Asking Gemini to review {git_diff[0:50]}")
+        logger.debug(f"Asking Gemini to review {git_diff[0:100]}")
         return self.model.generate_content(f"{self.__prompt}\n\n{git_diff}").text
 
 
