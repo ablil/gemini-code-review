@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils import assert_env_variable, create_logger
+from utils import assert_env_variable, create_logger, get_default_prompt
 
 import google.generativeai as genai
 
@@ -8,10 +8,8 @@ import google.generativeai as genai
 logger = create_logger(__name__)
 
 class Gemini:
-    __prompt = """
-Review only the changes in the following git diff and provide clear, concise suggestions for improvement. Focus on aspects like readability, performance, and maintainability in the changed code. Include code samples or refactor suggestions where applicable. Do not review the unchanged code, and avoid unnecessary explanations—just actionable feedback on the modifications. Here’s the diff:"""
-
-    def __init__(self, apikey: str, gemini_model: str = 'gemini-1.5-flash'):
+    def __init__(self, apikey: str, prompt: str = get_default_prompt(), gemini_model: str = 'gemini-1.5-flash'):
+        self.__prompt = prompt
         genai.configure(api_key=apikey)
         self.model = genai.GenerativeModel(gemini_model)
         logger.info(f"Gemini client configured successfully with model '{gemini_model}'")
@@ -29,5 +27,5 @@ if __name__ == '__main__':
     api_key = assert_env_variable('GEMINI_API_KEY')
     model = assert_env_variable('GEMINI_MODEL', 'gemini-1.5-flash')
 
-    gemini = Gemini(api_key, model)
+    gemini = Gemini(api_key)
     print(gemini.ask('How can you help me ?'))
