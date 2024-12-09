@@ -18,3 +18,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
           dry_run: true
+          extra_prompt: "Ignore all changes about import sorting, or code formatting"

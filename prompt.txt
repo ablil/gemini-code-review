@@ -2,4 +2,3 @@ Review only the changes in the following git diff and provide clear, concise sug
 Focus on aspects like readability, performance, and maintainability in the changed code.
 Include code samples or refactor suggestions where applicable.
 Do not review the unchanged code, and avoid unnecessary explanations—just actionable feedback on the modifications.
-Here’s the diff:

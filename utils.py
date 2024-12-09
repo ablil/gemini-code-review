@@ -43,3 +43,6 @@ def create_logger(name: str = __name__) -> bool:
 def get_default_prompt(filename: str = 'prompt.txt') -> str:
     with open(filename, 'r') as f:
         return f.read().strip()
+
+def get_extra_prompt() -> str|None:
+    return get_env_variable_or_default('EXTRA_PROMPT')

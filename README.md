@@ -16,6 +16,8 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 | `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
 | `exclude_filenames` | No       | Filenames to exclude from code review, by default it picks up all file ignored by git on .gitignore. Can be overriden with a custom list like: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
 | `dry_run`    | No      | set this to 1 or 'true' if you want to test this action without actually commenting on pull requesst |
+| `debug`    | No      | set this to 1 or 'true' if you set logging level to DEBUG |
+| `extra_prompt`    | No      | Customize the default prompt by adding extra instructions (default: prompt.txt)|
 
 ## Output
 
@@ -57,3 +59,18 @@ jobs:
    * Go to **Settings** >> **secrets and variables** >> **actions** >> **New repository secret**
    * Name it **GEMINI_API_KEY** and paste your key.
 3. Update your workflow with the example above.
+
+### Prompt
+
+The default prompt provided to Gemini on [prompt.txt](prompt.txt) can be adjusted through the input field **extra_prompt**, for example you
+can ask Gemini to ignore comments about formatting or import sorting orders.
+
+```yaml
+// ...
+steps:
+  - name: Run Gemini AI Review
+    uses: ablil/gemini-code-review@0.4.1
+    with:
+      extra_prompt: "Ignore all changes about import sorting, or code formatting"
+      // ...
+```

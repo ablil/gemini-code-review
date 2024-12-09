@@ -8,8 +8,12 @@ import google.generativeai as genai
 logger = create_logger(__name__)
 
 class Gemini:
-    def __init__(self, apikey: str, prompt: str = get_default_prompt(), gemini_model: str = 'gemini-1.5-flash'):
-        self.__prompt = prompt
+    def __init__(self, apikey: str, extra_prompt: str|None = None, gemini_model: str = 'gemini-1.5-flash'):
+        if extra_prompt:
+            self.__prompt = f"""{get_default_prompt()}\n\n{extra_prompt}\n\nHere is the diff"""
+        else:
+            self.__prompt = f"""{get_default_prompt()}\n\nHere is the diff"""
+            
         genai.configure(api_key=apikey)
         self.model = genai.GenerativeModel(gemini_model)
         logger.info(f"Gemini client configured successfully with model '{gemini_model}'")
