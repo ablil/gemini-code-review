@@ -23,6 +23,9 @@ inputs:
     required: false
     description: 'set this value to true or 1 to switch to debug level (default: false)'
     default: false
+  extra_prompt:
+    requried: false
+    description: 'enhance default prompt by adding extra instructions'
 
 branding:
   icon: 'check-circle'
@@ -38,3 +41,4 @@ runs:
     GEMINI_MODEL: ${{ inputs.gemini_model }}
     DRY_RUN: ${{ inputs.dry_run }}
     DEBUG: ${{ inputs.debug }}
+    EXTRA_PROMPT: ${{ inputs.extra_prompt }}

@@ -4,7 +4,7 @@ import logging
 
 from ai import Gemini
 from gh import GithubClient
-from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default, create_logger
+from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default, create_logger, get_extra_prompt
 
 logger = create_logger(__name__)
 
@@ -33,9 +33,10 @@ if __name__ == '__main__':
     repository_name = assert_env_variable('GITHUB_REPOSITORY')
     github_token = assert_env_variable('GITHUB_TOKEN')
     ref_name = assert_env_variable('GITHUB_REF_NAME')
+    extra_prompt = get_extra_prompt()
 
     github = GithubClient(github_token, dry_run = get_env_variable_or_default('DRY_RUN', 'false').lower() in ['1', 'true'])
-    gemini = Gemini(gemini_api_key)
+    gemini = Gemini(gemini_api_key, extra_prompt)
 
     # run
     main(github, gemini, repository_name, int(ref_name.split('/')[0]))
