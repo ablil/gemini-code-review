@@ -1,16 +1,17 @@
 #!usr/bin/env python3
+
 import logging
 
 from ai import Gemini
 from gh import GithubClient
-from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default
+from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default, create_logger
 
-logging.basicConfig(level=logging.DEBUG)
+logger = create_logger(__name__)
 
 logging.getLogger('urllib3').setLevel(logging.WARN)
 
 def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: int):
-    pull_request = github.get_pull_request(repository_name, int(ref_name.split('/')[0]))
+    pull_request = github.get_pull_request(repository_name, pr_no)
 
     excluded_filenames = get_env_variable_or_default('EXCLUDE_FILENAMES')
     if excluded_filenames:
@@ -24,7 +25,7 @@ def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: i
         try:
             github.comment(pull_request, gemini.review(diff.diff), diff.filename)
         except Exception as e:
-            logging.error(e)
+            logger.error(e)
 
 if __name__ == '__main__':
     # verify all needed env variables
