@@ -40,7 +40,7 @@ def create_logger(name: str = __name__) -> bool:
 
     return logger
 
-def get_default_prompt(filename: str = 'prompt.txt') -> str:
+def get_default_prompt(filename: str = '/prompt.txt') -> str:
     with open(filename, 'r') as f:
         return f.read().strip()
 
