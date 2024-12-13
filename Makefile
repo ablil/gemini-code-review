@@ -4,13 +4,13 @@ help:
 	@echo "usage: make (patch|minor|major)"
 
 dryrun:
-	@bash dryrun.sh
+	@bash scripts/dryrun.sh
 	
 patch:
-	@bash bumpversion.sh patch
+	@bash scripts/bumpversion.sh patch
 
 minor:
-	@bash bumpversion.sh minor
+	@bash scripts/bumpversion.sh minor
 
 major:
-	@bash bumpversion.sh major
+	@bash scripts/bumpversion.sh major
