@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Run Gemini AI Review
-        uses: ablil/gemini-code-review@0.5.3
+        uses: ablil/gemini-code-review@v0.5.3
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -73,4 +73,4 @@ steps:
     with:
       extra_prompt: "Ignore all changes about import sorting, or code formatting"
       // ...
-```
+``
