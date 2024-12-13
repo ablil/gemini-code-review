@@ -1,6 +1,12 @@
-FROM ghcr.io/ablil/gemini-code-review:latest
+FROM python:3.12
 
-COPY *.py prompt.txt enrypoint.sh /
+WORKDIR /
+
+RUN pip install poetry
+COPY poetry.lock pyproject.toml /
+RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi
+
+COPY . /
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
