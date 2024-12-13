@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python /app.py
+pwd
+ls -l
+python app.py
