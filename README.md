@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: Run Gemini AI Review
-        uses: ablil/gemini-code-review@v0.5.9
+        uses: ablil/gemini-code-review@v0.5.10
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,7 +69,7 @@ can ask Gemini to ignore comments about formatting or import sorting orders.
 // ...
 steps:
   - name: Run Gemini AI Review
-    uses: ablil/gemini-code-review@0.5.9
+    uses: ablil/gemini-code-review@0.5.10
     with:
       extra_prompt: "Ignore all changes about import sorting, or code formatting"
       // ...
