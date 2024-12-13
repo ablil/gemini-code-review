@@ -1,5 +1,4 @@
 #!/bin/bash
 
-pwd
-ls -l
+cd /github/workspace
 python app.py
