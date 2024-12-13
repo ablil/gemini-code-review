@@ -1,0 +1,17 @@
+name: Gemini AI Pull Request Review
+
+on:
+  pull_request:
+
+permissions: write-all
+
+jobs:
+  gemini-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Gemini AI Review
+        uses: ablil/gemini-code-review@v0.5.8
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
