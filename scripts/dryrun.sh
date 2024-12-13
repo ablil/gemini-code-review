@@ -8,4 +8,4 @@ export GITHUB_REF_NAME=5/foo/bar
 export GITHUB_REPOSITORY=ablil/gemini-code-review
 export EXTRA_PROMPT="Ignore all changes about import sorting, or code formatting"
 
-python $root_dir/app.py
+python $root_dir/src/app.py
