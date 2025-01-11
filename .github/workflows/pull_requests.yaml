@@ -17,5 +17,5 @@ jobs:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           debug: true
-          dry_run: false
+          dry_run: true
           extra_prompt: "Ignore all changes about import sorting, or code formatting"
