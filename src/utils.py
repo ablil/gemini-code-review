@@ -3,6 +3,11 @@
 import os
 import logging
 
+DEFAULT_EXCLUDED_FILES = [
+    '**/*lock*',
+    '**/.*ignore',
+    '**/*.md'
+]
 def is_debug_enabled() -> bool:
     return 'DEBUG' in os.environ and os.environ['DEBUG'].strip().lower() in ['1', 'true']
 

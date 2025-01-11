@@ -14,7 +14,7 @@ This GitHub Action integrates with **Gemini AI** to review your pull requests, p
 | `GITHUB_TOKEN`      | Yes      | Github Token to interact with Github API, provided by google through ${{ secrets.GITHUB_TOKEN }} |
 | `gemini_api_key`    | Yes      | Your Gemini API key. [Get your API key here](https://ai.google.dev/gemini-api/docs/api-key).  |
 | `gemini_model`      | No       | The Gemini model to use, by default it's **gemini-1.5-flash**, you can find all models [here](https://ai.google.dev/gemini-api/docs/models/gemini) |
-| `exclude_filenames` | No       | Filenames to exclude from code review, by default it picks up all file ignored by git on .gitignore. Can be overriden with a custom list like: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
+| `exclude_filenames` | No       | Filenames to exclude from code review, by default it will ignore [this list](#excluded-files). Can be extended with a custom list like: '*.txt,*.yaml,*.yml,package-lock.json,yarn.lock |
 | `dry_run`    | No      | set this to 1 or 'true' if you want to test this action without actually commenting on pull requesst |
 | `debug`    | No      | set this to 1 or 'true' if you set logging level to DEBUG |
 | `extra_prompt`    | No      | Customize the default prompt by adding extra instructions (default: prompt.txt)|
@@ -73,4 +73,12 @@ steps:
     with:
       extra_prompt: "Ignore all changes about import sorting, or code formatting"
       // ...
-``
+```
+
+### excluded files
+
+This is the default list of excluded files from code review:
+
+* **/\*lock\* : all lock files (eg, package-lock.json, yarn.lock)
+* **/.\*ignore : all ignore files (eg, .gitignore, .dockerignore ...)
+* **/\*.md : all markdown files
