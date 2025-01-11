@@ -4,7 +4,7 @@ import logging
 
 from ai import Gemini
 from gh import GithubClient
-from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default, create_logger, get_extra_prompt
+from utils import assert_env_variable, get_files_from_gitignore, get_env_variable_or_default, create_logger, get_extra_prompt, DEFAULT_EXCLUDED_FILES
 
 logger = create_logger(__name__)
 
@@ -13,11 +13,8 @@ logging.getLogger('urllib3').setLevel(logging.WARN)
 def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: int):
     pull_request = github.get_pull_request(repository_name, pr_no)
 
-    excluded_filenames = get_env_variable_or_default('EXCLUDE_FILENAMES')
-    if excluded_filenames:
-        excluded_filenames = set(excluded_filenames.split(','))
-    else:
-        excluded_filenames = get_files_from_gitignore('.gitignore')
+    excluded_filenames = get_env_variable_or_default('EXCLUDE_FILENAMES', '').split(',')
+    excluded_filenames.extend(DEFAULT_EXCLUDED_FILES)
 
     diffs = github.extract_diffs(pull_request, excluded_filenames)
 
