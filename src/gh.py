@@ -39,6 +39,10 @@ class GithubClient:
 
         result: List[GitDiff] = []
         for file in filtered_files:
+            if not 'patch' in file.raw_data:
+                logger.warning(f"key 'patch' NOT found in  {file.raw_data}")
+                continue
+
             diff = file.raw_data['patch']
             changed_lines = re.findall(r'@@ -(\d+),\d+ \+\d+,\d+ @@', diff)
 
