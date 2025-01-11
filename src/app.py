@@ -20,7 +20,7 @@ def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: i
 
     for diff in diffs:
         try:
-            github.comment(pull_request, gemini.review(diff.diff), diff.filename)
+            github.comment(pull_request, gemini.review(diff.diff), diff.filename, diff.linenumber)
         except Exception as e:
             logger.error(e)
 

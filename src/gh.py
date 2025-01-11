@@ -8,6 +8,7 @@ from github import Auth
 from github import Github, PullRequest
 
 from utils import assert_env_variable, get_files_from_gitignore, create_logger
+import re
 
 logger = create_logger(__name__)
 
@@ -16,6 +17,7 @@ logger = create_logger(__name__)
 class GitDiff:
     filename: str
     diff: str
+    linenumber: int
 
 
 class GithubClient:
@@ -34,9 +36,17 @@ class GithubClient:
         all_files = list(pull_request.get_files())
         filtered_files = list(filter(lambda filename: not  self.__should_exclude(filename.filename, exclude_patterns), all_files))
         logger.info(f"total changed files {len(all_files)}, extracting diffs from {len(filtered_files)} files only")
-        return list(GitDiff(filename=file.filename, diff=file.raw_data['patch']) for file in filtered_files)
 
-    def comment(self, pr: PullRequest, body: str, filename: str):
+        result: List[GitDiff] = []
+        for file in filtered_files:
+            diff = file.raw_data['patch']
+            changed_lines = re.findall(r'@@ -(\d+),\d+ \+\d+,\d+ @@', diff)
+
+            result.append(GitDiff(filename=file.filename, diff=diff, linenumber=int(changed_lines[0]) if len(changed_lines) else 0))
+
+        return result
+
+    def comment(self, pr: PullRequest, body: str, filename: str, linenumber: int):
         assert len(body), 'Blank github comment body provided'
         assert len(filename), 'Blank filename'
 
@@ -45,7 +55,7 @@ class GithubClient:
             if self.dry_run:
                 logger.info(f"[dry-run] commented on file {filename}")
             else:
-                pr.create_comment(body, last_commit, filename, 1)
+                pr.create_comment(body, last_commit, filename, linenumber)
                 logger.info(f"commented on file {filename}")
         except Exception as e:
             logger.error(f"failed to comment on file {filename}, {e}")
