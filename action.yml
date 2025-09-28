@@ -10,8 +10,8 @@ inputs:
     description: 'Github token to interact with Github API, provided by Github'
   gemini-model:
     required: false
-    description: 'Gemini model to use (default: gemini-1.5-flash)'
-    default: 'gemini-1.5-flash'
+    description: 'Gemini model to use (default: gemini-2.5-flash)'
+    default: 'gemini-2.5-flash'
   exclude_filenames:
     required: false
     description: 'Filename patterns to exclude, by default it picks up what is on .gitignore'
