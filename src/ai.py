@@ -8,7 +8,7 @@ import google.generativeai as genai
 logger = create_logger(__name__)
 
 class Gemini:
-    def __init__(self, apikey: str, extra_prompt: str|None = None, gemini_model: str = 'gemini-1.5-flash'):
+    def __init__(self, apikey: str, extra_prompt: str|None = None, gemini_model: str = 'gemini-2.5-flash'):
         if extra_prompt:
             self.__prompt = f"""{get_default_prompt()}\n\n{extra_prompt}\n\nHere is the diff"""
         else:
@@ -29,7 +29,7 @@ class Gemini:
 
 if __name__ == '__main__':
     api_key = assert_env_variable('GEMINI_API_KEY')
-    model = assert_env_variable('GEMINI_MODEL', 'gemini-1.5-flash')
+    model = assert_env_variable('GEMINI_MODEL', 'gemini-2.5-flash')
 
     gemini = Gemini(api_key)
     print(gemini.ask('How can you help me ?'))
