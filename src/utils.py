@@ -4,9 +4,16 @@ import os
 import logging
 
 DEFAULT_EXCLUDED_FILES = [
-    '**/*lock*',
+    '**/*.md',
+    '**/package-lock.json',
+    '**/yarn.lock',
+    '**/pnpm-lock.yaml',
+    '**/LICENSE',
+    '**/LICENSE.*',
+    '**/COPYING',
+    '**/COPYING.*',
     '**/.*ignore',
-    '**/*.md'
+    '**/*lock*',
 ]
 def is_debug_enabled() -> bool:
     return 'DEBUG' in os.environ and os.environ['DEBUG'].strip().lower() in ['1', 'true']
