@@ -13,12 +13,11 @@ import re
 logger = create_logger(__name__)
 
 
-
 @dataclasses.dataclass
 class GitDiff:
     filename: str
     diff: str
-    positions: list[int]  # positions in the diff for changed lines
+    linenumber: int
 
 
 class GithubClient:
@@ -45,32 +44,25 @@ class GithubClient:
                 continue
 
             diff = file.raw_data['patch']
-            # Find all positions of changed lines in the diff
-            positions = []
-            diff_lines = diff.splitlines()
-            pos = 0
-            for i, line in enumerate(diff_lines):
-                if line.startswith('+') and not line.startswith('+++'):
-                    positions.append(pos)
-                if not line.startswith('-') or line.startswith('---'):
-                    pos += 1
-            result.append(GitDiff(filename=file.filename, diff=diff, positions=positions))
+            changed_lines = re.findall(r'@@ -(\d+),\d+ \+\d+,\d+ @@', diff)
+
+            result.append(GitDiff(filename=file.filename, diff=diff, linenumber=int(changed_lines[0]) if len(changed_lines) else 0))
 
         return result
 
-    def comment(self, pr: PullRequest, body: str, filename: str, position: int):
+    def comment(self, pr: PullRequest, body: str, filename: str, linenumber: int):
         assert len(body), 'Blank github comment body provided'
         assert len(filename), 'Blank filename'
 
         try:
             last_commit = pr.get_commits()[pr.commits - 1]
             if self.dry_run:
-                logger.info(f"[dry-run] commented on file {filename} at position {position}")
+                logger.info(f"[dry-run] commented on file {filename}")
             else:
-                pr.create_comment(body, last_commit, filename, position)
-                logger.info(f"commented on file {filename} at position {position}")
+                pr.create_comment(body, last_commit, filename, linenumber)
+                logger.info(f"commented on file {filename}")
         except Exception as e:
-            logger.error(f"failed to comment on file {filename} at position {position}, {e}")
+            logger.error(f"failed to comment on file {filename}, {e}")
 
     def __should_exclude(self, filename: str, patterns: set[str]) -> bool:
         return any(fnmatch.fnmatch(filename, pat) for pat in patterns)

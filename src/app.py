@@ -31,9 +31,7 @@ def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: i
             logger.info(f"Skipping {diff.filename}, diff unchanged.")
             continue
         try:
-            review_body = gemini.review(diff.diff)
-            if diff.positions:
-                github.comment(pull_request, review_body, diff.filename, diff.positions[0])
+            github.comment(pull_request, gemini.review(diff.diff), diff.filename, diff.linenumber)
             updated_hashes[diff.filename] = diff_hash
         except Exception as e:
             logger.error(e)
