@@ -5,6 +5,7 @@ PR_STATE_MARKER = "<!-- GEMINI_REVIEWED_HASHES -->"
 
 # These functions assume the PR object is a PyGithub PullRequest
 
+
 def get_state_comment(pr):
     """Return (comment, content) for the state marker, or (None, None) if not found."""
     for c in pr.get_issue_comments():
@@ -14,12 +15,12 @@ def get_state_comment(pr):
                 return c, data
             except Exception:
                 continue
-    return None, {}
+    return None, {"reviewed_hashes": {}, "last_reviewed_sha": None}
 
-def upsert_state_comment(pr, hashes):
+def upsert_state_comment(pr, state):
     """Create or update the state marker comment on the PR."""
     import json
-    body = PR_STATE_MARKER + "\n" + json.dumps(hashes)
+    body = PR_STATE_MARKER + "\n" + json.dumps(state)
     comment, _ = get_state_comment(pr)
     if comment:
         comment.edit(body)

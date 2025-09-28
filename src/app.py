@@ -20,10 +20,24 @@ def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: i
     excluded_filenames = get_env_variable_or_default('EXCLUDE_FILENAMES', '').split(',')
     excluded_filenames.extend(DEFAULT_EXCLUDED_FILES)
 
-    diffs = github.extract_diffs(pull_request, excluded_filenames)
+    # Load PR state (reviewed_hashes and last_reviewed_sha)
+    _, state = get_state_comment(pull_request)
+    reviewed_hashes = state.get("reviewed_hashes", {})
+    last_reviewed_sha = state.get("last_reviewed_sha")
 
-    # Load reviewed hashes from PR comment
-    _, reviewed_hashes = get_state_comment(pull_request)
+    # Determine base and head SHAs
+    base_sha = last_reviewed_sha or pull_request.base.sha
+    head_sha = pull_request.head.sha
+
+    # Only review new commits if last_reviewed_sha exists, else review all
+    if last_reviewed_sha and last_reviewed_sha != head_sha:
+        logger.info(f"Reviewing only new commits: {base_sha}..{head_sha}")
+        # Optionally, you may want to use a method to get only the diff for these commits
+        # For now, extract_diffs will still get all changed files, but you can filter diffs by commit range if needed
+    else:
+        logger.info(f"Reviewing all changes: {base_sha}..{head_sha}")
+
+    diffs = github.extract_diffs(pull_request, excluded_filenames)
     updated_hashes = dict(reviewed_hashes)
     for diff in diffs:
         diff_hash = hash_diff(diff.diff)
@@ -35,7 +49,8 @@ def main(github_client: GithubClient, gemini_client: Gemini, repo: str, pr_no: i
             updated_hashes[diff.filename] = diff_hash
         except Exception as e:
             logger.error(e)
-    upsert_state_comment(pull_request, updated_hashes)
+    # Update PR state with new hashes and last reviewed SHA
+    upsert_state_comment(pull_request, {"reviewed_hashes": updated_hashes, "last_reviewed_sha": head_sha})
 
 if __name__ == '__main__':
     # verify all needed env variables
